@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WorldOfTravels.Data;
 
 namespace WorldOfTravels.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180911144329_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,27 +199,6 @@ namespace WorldOfTravels.Data.Migrations
                     b.ToTable("Country");
                 });
 
-            modelBuilder.Entity("WorldOfTravels.Models.Post", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content");
-
-                    b.Property<int?>("CountryID");
-
-                    b.Property<DateTime>("PublishDate");
-
-                    b.Property<string>("Title");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("CountryID");
-
-                    b.ToTable("Post");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -261,13 +242,6 @@ namespace WorldOfTravels.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("WorldOfTravels.Models.Post", b =>
-                {
-                    b.HasOne("WorldOfTravels.Models.Country", "Country")
-                        .WithMany("Posts")
-                        .HasForeignKey("CountryID");
                 });
 #pragma warning restore 612, 618
         }
