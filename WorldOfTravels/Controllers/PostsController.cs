@@ -22,7 +22,16 @@ namespace WorldOfTravels.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Post.ToListAsync());
+            var postsQuery = from d in _context.Post
+                             orderby d.PublishDate
+                             select d;
+
+            foreach (Post currPost in postsQuery)
+            {
+                currPost.Country = _context.Country.First(c => c.ID == currPost.CountryID);
+            }
+
+            return View(await postsQuery.ToListAsync());
         }
 
         // GET: Posts/Details/5
@@ -39,13 +48,14 @@ namespace WorldOfTravels.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(post);
         }
 
         // GET: Posts/Create
         public IActionResult Create()
         {
+            PopulateCountriesDropDownList();
             return View();
         }
 
@@ -54,10 +64,15 @@ namespace WorldOfTravels.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Content,Title,PublishDate")] Post post)
+        public async Task<IActionResult> Create([Bind("ID,Content,Title,CountryID")] Post post)
         {
             if (ModelState.IsValid)
             {
+                post.PublishDate = DateTime.Now;
+                post.Country = (Country)(from d in _context.Country
+                                     where d.ID == post.CountryID
+                                     select d).First();
+
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -78,6 +93,7 @@ namespace WorldOfTravels.Controllers
             {
                 return NotFound();
             }
+            PopulateCountriesDropDownList(post.CountryID);
             return View(post);
         }
 
@@ -86,7 +102,7 @@ namespace WorldOfTravels.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Content,Title,PublishDate")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Content,Title,PublishDate,CountryID")] Post post)
         {
             if (id != post.ID)
             {
@@ -97,6 +113,10 @@ namespace WorldOfTravels.Controllers
             {
                 try
                 {
+                    post.PublishDate = DateTime.Now;
+                    post.Country = (Country)(from d in _context.Country
+                                             where d.ID == post.CountryID
+                                             select d).First();
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
@@ -113,6 +133,7 @@ namespace WorldOfTravels.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            PopulateCountriesDropDownList(post.CountryID);
             return View(post);
         }
 
@@ -130,7 +151,6 @@ namespace WorldOfTravels.Controllers
             {
                 return NotFound();
             }
-
             return View(post);
         }
 
@@ -148,6 +168,15 @@ namespace WorldOfTravels.Controllers
         private bool PostExists(int id)
         {
             return _context.Post.Any(e => e.ID == id);
+        }
+
+        private void PopulateCountriesDropDownList(object selectedCountry = null)
+        {
+            var countriesQuery = from d in _context.Country
+                                   orderby d.Name
+                                   select d;
+
+            ViewBag.CountryID = new SelectList(countriesQuery, "ID", "Name", selectedCountry);
         }
     }
 }

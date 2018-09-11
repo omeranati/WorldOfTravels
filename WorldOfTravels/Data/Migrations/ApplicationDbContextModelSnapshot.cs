@@ -205,7 +205,7 @@ namespace WorldOfTravels.Data.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<int?>("CountryID");
+                    b.Property<int>("CountryID");
 
                     b.Property<DateTime>("PublishDate");
 
@@ -267,7 +267,8 @@ namespace WorldOfTravels.Data.Migrations
                 {
                     b.HasOne("WorldOfTravels.Models.Country", "Country")
                         .WithMany("Posts")
-                        .HasForeignKey("CountryID");
+                        .HasForeignKey("CountryID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
