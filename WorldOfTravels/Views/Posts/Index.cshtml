@@ -1,53 +1,40 @@
 ﻿@model IEnumerable<WorldOfTravels.Models.Post>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Posts";
 }
 
-<h2>Posts</h2>
+<h1>World Of Travel Posts</h1>
+<p></p>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Country)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PublishDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublishDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Create")'">
+    <span class="glyphicon glyphicon-pencil"></span> Write New Post
+</button>
+<p></p>
+
+<div class="row">
+    <div class="col-lg-8">
+        @foreach (var item in Model)
+        {
+            <div>
+                <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
+                <hr>
+                <p>
+                    <span class="glyphicon glyphicon-globe"></span> <strong>@Html.DisplayFor(modelItem => item.Country.Name)</strong>
+                </p>
+                <p class="small">
+                    <span class="glyphicon glyphicon-calendar"></span> Posted on @Html.DisplayFor(modelItem => item.PublishDate)
+                </p>
+                <p>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </p>
+                <p>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </p>
+            </div>
+            <br/>
+        }
+    </div>
+</div>
