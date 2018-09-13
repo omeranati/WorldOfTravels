@@ -4,11 +4,18 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Our Countries</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="col-md-12 center-block">
+    <iframe scrolling="no" frameborder="0" clocktype="html5" style="overflow:hidden;border:0;margin:0;padding:0;width:480px;height:250px;" src="https://www.clocklink.com/clocks/HTML5/html5-world.html?Johannesburg&Mogadishu&Bangui&480&gray"></iframe>
+</div>
+
+<div>
+    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Create")'">
+        <span class="glyphicon glyphicon-pencil"></span> Add New Country
+    </button>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -19,17 +26,18 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
