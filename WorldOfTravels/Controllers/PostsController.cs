@@ -20,18 +20,27 @@ namespace WorldOfTravels.Controllers
         }
 
         // GET: Posts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string TitleSearchString, string DateSearch)
         {
-            var postsQuery = from d in _context.Post
-                             orderby d.PublishDate
-                             select d;
+            var posts = from d in _context.Post
+                        select d;
 
-            foreach (Post currPost in postsQuery)
+            foreach (Post currPost in posts)
             {
                 currPost.Country = _context.Country.First(c => c.ID == currPost.CountryID);
             }
 
-            return View(await postsQuery.ToListAsync());
+            if (!String.IsNullOrEmpty(TitleSearchString))
+            {
+                posts = posts.Where(p => p.Title.Contains(TitleSearchString));
+            }
+
+            if (!String.IsNullOrEmpty(DateSearch))
+            {
+                posts = posts.Where(p => p.PublishDate.Date == DateTime.Parse(DateSearch).Date);
+            }
+
+            return View(await posts.ToListAsync());
         }
 
         // GET: Posts/Details/5

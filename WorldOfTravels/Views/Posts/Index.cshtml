@@ -12,6 +12,16 @@
 </button>
 <p></p>
 
+<form asp-controller="Posts" asp-action="Index" method="get" class="row">
+    <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Title" name="TitleSearchString">
+    </div>
+    <div class="col-md-3">
+        <input type="date" class="form-control" placeholder="Publish Date" name="DateSearch"/>
+    </div>
+    <input type="submit" value="Filter" class="btn btn-info" />
+</form>
+
 <div class="row">
     <div class="col-lg-8">
         @foreach (var item in Model)
@@ -34,7 +44,7 @@
                     <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                 </p>
             </div>
-            <br/>
+            <br />
         }
     </div>
 </div>
