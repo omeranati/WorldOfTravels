@@ -15,5 +15,6 @@ namespace WorldOfTravels.Data
         }
         public DbSet<WorldOfTravels.Models.Country> Country { get; set; }
         public DbSet<WorldOfTravels.Models.Post> Post { get; set; }
+        public DbSet<WorldOfTravels.Models.Comment> Comment { get; set; }
     }
 }

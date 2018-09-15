@@ -44,6 +44,33 @@
                     <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                 </p>
             </div>
+
+            <div class="row">
+                <div class="well well-sm col-md-6">
+                    <p><i class="glyphicon glyphicon-send"></i> Leave a Comment:</p>
+                    @using (Html.BeginForm("PostComment", "Posts"))
+                    {
+                        <input type="hidden" name="postId" value="@item.ID" />
+                        <div class="form-group">
+                            <textarea name="content" class="form-control" rows="2"></textarea>
+                        </div>
+                        <button type="submit" value="post" class="btn btn-info">Submit</button>
+                    }
+                </div>
+            </div>
+
+            @foreach (var comment in item.Comments)
+            {
+                <div>
+                    <p>
+                        <i class="glyphicon glyphicon-comment"></i> User blabla:
+                        <br />
+                        <small>@Html.DisplayFor(modelItem => comment.CreationDate)</small>
+                    </p>
+                    <p>@Html.DisplayFor(modelItem => comment.Content)</p>
+                </div>
+            }
+
             <br />
         }
     </div>

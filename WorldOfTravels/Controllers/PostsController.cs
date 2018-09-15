@@ -28,6 +28,7 @@ namespace WorldOfTravels.Controllers
             foreach (Post currPost in posts)
             {
                 currPost.Country = _context.Country.First(c => c.ID == currPost.CountryID);
+                currPost.Comments = _context.Comment.Where(c => c.PostID == currPost.ID).ToList();
             }
 
             if (!String.IsNullOrEmpty(TitleSearchString))
@@ -87,6 +88,21 @@ namespace WorldOfTravels.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(post);
+        }
+
+        public ActionResult PostComment(int postId, string content)
+        {
+            Comment comment = new Comment
+            {
+                Content = content,
+                PostID = postId,
+                CreationDate = DateTime.Now
+            };
+
+            _context.Comment.Add(comment);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         // GET: Posts/Edit/5

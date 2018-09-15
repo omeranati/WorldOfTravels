@@ -20,5 +20,6 @@ namespace WorldOfTravels.Models
 
         public virtual int CountryID { get; set; }
         public virtual Country Country { get; set; }
+        public virtual List<Comment> Comments { get; set; }
     }
 }
