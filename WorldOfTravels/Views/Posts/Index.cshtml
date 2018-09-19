@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<WorldOfTravels.Models.Post>
+@using Microsoft.AspNetCore.Identity
 
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @{
     ViewData["Title"] = "Posts";
 }
@@ -17,7 +20,7 @@
         <input type="text" class="form-control" placeholder="Title" name="TitleSearchString">
     </div>
     <div class="col-md-3">
-        <input type="date" class="form-control" placeholder="Publish Date" name="DateSearch"/>
+        <input type="date" class="form-control" placeholder="Publish Date" name="DateSearch" />
     </div>
     <input type="submit" value="Filter" class="btn btn-info" />
 </form>
@@ -26,24 +29,28 @@
     <div class="col-lg-8">
         @foreach (var item in Model)
         {
-            <div>
-                <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
-                <hr>
-                <p>
-                    <span class="glyphicon glyphicon-globe"></span> <strong>@Html.DisplayFor(modelItem => item.Country.Name)</strong>
-                </p>
-                <p class="small">
-                    <span class="glyphicon glyphicon-calendar"></span> Posted on @Html.DisplayFor(modelItem => item.PublishDate)
-                </p>
-                <p>
-                    @Html.DisplayFor(modelItem => item.Content)
-                </p>
-                <p>
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+        <div>
+            <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
+            <strong>@Html.DisplayFor(modelItem => item.UploaderUserName)</strong>
+            <hr>
+            <p>
+                <span class="glyphicon glyphicon-globe"></span> <strong>@Html.DisplayFor(modelItem => item.Country.Name)</strong>
+            </p>
+            <p class="small">
+                <span class="glyphicon glyphicon-calendar"></span> Posted on @Html.DisplayFor(modelItem => item.PublishDate)
+            </p>
+            <p>
+                @Html.DisplayFor(modelItem => item.Content)
+            </p>
+            <p>
+                @if (item.UploaderUserName != null && item.UploaderUserName.Equals(UserManager.GetUserName(User)))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>
                     <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                </p>
-            </div>
+                }
+            </p>
+         </div>
 
             <div class="row">
                 <div class="well well-sm col-md-6">
@@ -63,7 +70,8 @@
             {
                 <div>
                     <p>
-                        <i class="glyphicon glyphicon-comment"></i> User blabla:
+                        <span class="glyphicon glyphicon-comment"></span>
+                        @Html.DisplayFor(modelItem => comment.UploaderUserName):
                         <br />
                         <small>@Html.DisplayFor(modelItem => comment.CreationDate)</small>
                     </p>
