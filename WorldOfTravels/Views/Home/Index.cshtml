@@ -2,6 +2,11 @@
     ViewData["Title"] = "Home";
 }
 
+<header class="header">
+    <h1 class="hoverShadow">World Of Travels</h1>
+    <p class="lead">Discover all of the world's best experiences</p>
+</header>
+
 <div id="fb-root"></div>
 <script>
     (function (d, s, id) {
@@ -10,12 +15,8 @@
         js = d.createElement(s); js.id = id;
         js.src = 'https://connect.facebook.net/he_IL/sdk.js#xfbml=1&version=v3.1&appId=71958063747&autoLogAppEvents=1';
         fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
-
-<h1 style="text-shadow: 2px 2px 0px #fff; font-family: 'Dosis', sans-serif;">
-    World Of Travels
-</h1>
-<p class="lead">Discover all of the world's most mysterious secret experiences</p>
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 
 <div class="row">
     <div class="col-md-3">

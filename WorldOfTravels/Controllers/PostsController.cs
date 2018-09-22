@@ -41,7 +41,7 @@ namespace WorldOfTravels.Controllers
                 posts = posts.Where(p => p.PublishDate.Date == DateTime.Parse(DateSearch).Date);
             }
 
-            return View(await posts.ToListAsync());
+            return View(await posts.OrderByDescending(p => p.PublishDate).ToListAsync());
         }
 
         // GET: Posts/Details/5
@@ -104,6 +104,7 @@ namespace WorldOfTravels.Controllers
 
             return RedirectToAction("Index");
         }
+        
 
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -171,6 +172,7 @@ namespace WorldOfTravels.Controllers
             }
 
             var post = await _context.Post
+                .Include(p => p.Country)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (post == null)
             {
@@ -185,6 +187,7 @@ namespace WorldOfTravels.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var post = await _context.Post.FindAsync(id);
+            
             _context.Post.Remove(post);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

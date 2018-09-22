@@ -9,6 +9,35 @@ body {
     background-size: cover
 }
 
+header {
+    border-radius: 25px;
+    background: #b3ffcc;
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: black;
+    text-align: center;
+}
+
+.hoverShadow {
+    transition: text-shadow 2s;
+}
+
+
+header h1:hover {
+    text-shadow: 2px 2px 8px #b7babf;
+}
+
+@font-face {
+    font-family: travelsFont;
+    src: url('../lib/Bella Fashion.ttf');
+}
+
+header h1 {
+    font-family: travelsFont;
+    margin-top: 30px;
+}
+
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
@@ -16,17 +45,6 @@ body {
     padding-left: 15px;
     padding-right: 15px;
     background-color: white;
-}
-
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
 }
 
 /* QR code generator */
@@ -40,4 +58,18 @@ body {
     .carousel-caption {
         display: none;
     }
+}
+
+.center-tag {
+    float: none;
+    margin: 0 auto;
+}
+
+aside {
+    width: 40%;
+    padding-left: .5rem;
+    margin-left: .5rem;
+    float: right;
+    box-shadow: inset 5px 0 5px -5px #29627e;
+    color: #29627e;
 }

@@ -26,7 +26,7 @@
     <div class="col-lg-8">
         @foreach (var item in Model)
         {
-            <div>
+            <section>
                 <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
                 <hr>
                 <p>
@@ -43,9 +43,9 @@
                     <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                 </p>
-            </div>
+            </section>
 
-            <div class="row">
+            <section class="row" style="margin-left: 0px">
                 <div class="well well-sm col-md-6">
                     <p><i class="glyphicon glyphicon-send"></i> Leave a Comment:</p>
                     @using (Html.BeginForm("PostComment", "Posts"))
@@ -57,18 +57,18 @@
                         <button type="submit" value="post" class="btn btn-info">Submit</button>
                     }
                 </div>
-            </div>
+            </section>
 
             @foreach (var comment in item.Comments)
             {
-                <div>
+                <section>
                     <p>
                         <i class="glyphicon glyphicon-comment"></i> User blabla:
                         <br />
                         <small>@Html.DisplayFor(modelItem => comment.CreationDate)</small>
                     </p>
                     <p>@Html.DisplayFor(modelItem => comment.Content)</p>
-                </div>
+                </section>
             }
 
             <br />

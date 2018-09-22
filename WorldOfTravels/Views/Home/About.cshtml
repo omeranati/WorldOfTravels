@@ -1,7 +1,19 @@
 ﻿@{
-    ViewData["Title"] = "About";
+    ViewData["Title"] = "About Us";
 }
 <h2>@ViewData["Title"]</h2>
-<h3>@ViewData["Message"]</h3>
 
-<p>Use this area to provide additional information.</p>
+<div class="row">
+    <div class="col-sm-6">
+        <p><strong>Our goal is to help travellers, and curious explorers from all around the world, to find out MORE.</strong></p>
+        <aside>All of the posts in our site are free of advertisements!</aside>
+        <p>We want to help you find out about everything that might interest you, teach you something new or help you get around during your travel.</p>
+        <p>If you have some problem with our site please <a asp-area="" asp-controller="Home" asp-action="Contact">contact</a> us</p>
+    </div>
+    <div class="col-sm-6">
+        <video width="450" height="250" controls>
+            <source src="~/Videos/Travelling the world - Be a Traveller.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
