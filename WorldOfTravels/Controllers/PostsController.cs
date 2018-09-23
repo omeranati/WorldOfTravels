@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WorldOfTravels.Data;
 using WorldOfTravels.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WorldOfTravels.Controllers
 {
@@ -83,6 +84,8 @@ namespace WorldOfTravels.Controllers
                                      where d.ID == post.CountryID
                                      select d).First();
 
+                post.UploaderUserName = HttpContext.User.Identity.Name;
+
                 _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -96,7 +99,8 @@ namespace WorldOfTravels.Controllers
             {
                 Content = content,
                 PostID = postId,
-                CreationDate = DateTime.Now
+                CreationDate = DateTime.Now,
+                UploaderUserName = HttpContext.User.Identity.Name
             };
 
             _context.Comment.Add(comment);
