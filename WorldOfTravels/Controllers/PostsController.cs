@@ -21,7 +21,7 @@ namespace WorldOfTravels.Controllers
         }
 
         // GET: Posts
-        public async Task<IActionResult> Index(string TitleSearchString, string DateSearch)
+        public async Task<IActionResult> Index(string TitleSearchString, string DateSearch, int CountrySearch)
         {
             var posts = from d in _context.Post
                         select d;
@@ -41,6 +41,13 @@ namespace WorldOfTravels.Controllers
             {
                 posts = posts.Where(p => p.PublishDate.Date == DateTime.Parse(DateSearch).Date);
             }
+
+            if (CountrySearch != -1 && CountrySearch != 0)
+            {
+                posts = posts.Where(p => p.CountryID == CountrySearch);
+            }
+
+            PopulateCountriesSearchList();
 
             return View(await posts.OrderByDescending(p => p.PublishDate).ToListAsync());
         }
@@ -209,6 +216,15 @@ namespace WorldOfTravels.Controllers
                                    select d;
 
             ViewBag.CountryID = new SelectList(countriesQuery, "ID", "Name", selectedCountry);
+        }
+
+        private void PopulateCountriesSearchList()
+        {
+            var countriesQuery = from d in _context.Country
+                                 orderby d.Name
+                                 select d;
+
+            ViewBag.CountryID = new SelectList(countriesQuery, "ID", "Name", null);
         }
     }
 }

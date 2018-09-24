@@ -22,16 +22,20 @@
     <div class="col-md-3">
         <input type="date" class="form-control" placeholder="Publish Date" name="DateSearch" />
     </div>
+    <div class="col-md-3">
+        <select asp-items="ViewBag.CountryID" class="form-control" id="countriesList" name="CountrySearch"></select>
+    </div>
     <input type="submit" value="Filter" class="btn btn-info" />
+
 </form>
 
 <div class="row">
     <div class="col-lg-8">
         @foreach (var item in Model)
         {
-        <div>
+        <section>
             <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
-            <strong>@Html.DisplayFor(modelItem => item.UploaderUserName)</strong>
+            <i class="glyphicon glyphicon-user"></i> <strong>@Html.DisplayFor(modelItem => item.UploaderUserName)</strong>
             <hr>
             <p>
                 <span class="glyphicon glyphicon-globe"></span> <strong>@Html.DisplayFor(modelItem => item.Country.Name)</strong>
@@ -50,9 +54,9 @@
                     <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                 }
             </p>
-         </div>
+         </section>
 
-            <div class="row">
+            <div class="row" style="margin: 0px;">
                 <div class="well well-sm col-md-6">
                     <p><i class="glyphicon glyphicon-send"></i> Leave a Comment:</p>
                     @using (Html.BeginForm("PostComment", "Posts"))
@@ -68,7 +72,7 @@
 
             @foreach (var comment in item.Comments)
             {
-                <div>
+                <section>
                     <p>
                         <span class="glyphicon glyphicon-comment"></span>
                         @Html.DisplayFor(modelItem => comment.UploaderUserName):
@@ -76,10 +80,18 @@
                         <small>@Html.DisplayFor(modelItem => comment.CreationDate)</small>
                     </p>
                     <p>@Html.DisplayFor(modelItem => comment.Content)</p>
-                </div>
+                </section>
             }
 
             <br />
         }
     </div>
 </div>
+
+<script>
+    //document.getElementById("countriesList").selectedIndex = -1;
+    window.onload = function () {
+        $("#countriesList").prop("selectedIndex", -1);
+    };
+    
+</script>
