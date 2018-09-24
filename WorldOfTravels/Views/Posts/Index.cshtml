@@ -80,6 +80,15 @@
                         <small>@Html.DisplayFor(modelItem => comment.CreationDate)</small>
                     </p>
                     <p>@Html.DisplayFor(modelItem => comment.Content)</p>
+                    
+                    @if (comment.UploaderUserName != null && comment.UploaderUserName.Equals(UserManager.GetUserName(User)))
+                    {
+                        @using (Html.BeginForm("DeleteComment", "Posts"))
+                        {
+                            <input type="hidden" name="id" value="@comment.ID" />
+                            <button type="submit" class="btn btn-light btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
+                        }
+                    }
                 </section>
             }
 
