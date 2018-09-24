@@ -6,14 +6,10 @@
 
 <h2>Our Countries</h2>
 
-<div class="col-md-12 center-block">
-    <iframe scrolling="no" frameborder="0" clocktype="html5" style="overflow:hidden;border:0;margin:0;padding:0;width:480px;height:250px;" src="https://www.clocklink.com/clocks/HTML5/html5-world.html?Johannesburg&Mogadishu&Bangui&480&gray"></iframe>
-</div>
-
-<div>
-    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Create")'">
-        <span class="glyphicon glyphicon-pencil"></span> Add New Country
-    </button>
+<div class="row">
+    <div class="col-md-6 center-tag">
+        <iframe scrolling="no" frameborder="0" clocktype="html5" style="overflow:hidden;border:0;margin:0;padding:0;width:480px;height:250px;" src="https://www.clocklink.com/clocks/HTML5/html5-world.html?Johannesburg&Mogadishu&Bangui&480&gray"></iframe>
+    </div>
 </div>
 
 <table class="table">
@@ -41,3 +37,9 @@
         }
     </tbody>
 </table>
+
+<div>
+    <button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Create")'">
+        <span class="glyphicon glyphicon-pencil"></span> Add New Country
+    </button>
+</div>

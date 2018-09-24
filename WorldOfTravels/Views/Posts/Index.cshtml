@@ -7,13 +7,14 @@
     ViewData["Title"] = "Posts";
 }
 
-<h1>World Of Travel Posts</h1>
-<p></p>
+<div class="row">
+    <h1 class="col-md-9">World Of Travel Posts</h1>
+    <button style="margin-right: 10px; margin-top: 20px; float:right;" type="button" class="btn btn-info" onclick="location.href='@Url.Action("Create")'">
+        <span class="glyphicon glyphicon-pencil"></span> Write New Post
+    </button>
+</div>
 
-<button type="button" class="btn btn-info" onclick="location.href='@Url.Action("Create")'">
-    <span class="glyphicon glyphicon-pencil"></span> Write New Post
-</button>
-<p></p>
+
 
 <form asp-controller="Posts" asp-action="Index" method="get" class="row">
     <div class="col-md-3">
