@@ -68,7 +68,6 @@
                         where: item.name,
                         callback: function (answer, userData) {
                             var pushpin = new Microsoft.Maps.Pushpin(answer.results[0].location, {
-                                //icon: 'https://www.bingmapsportal.com/Content/images/poi_custom.png',
                                 icon: "images/map pin.png",
                                 title: item.name,
                             });
