@@ -54,7 +54,7 @@ namespace WorldOfTravels.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name")] Country country)
+        public async Task<IActionResult> Create([Bind("ID,Name,Continent,IsTropical")] Country country)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace WorldOfTravels.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Name")] Country country)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Continent,IsTropical")] Country country)
         {
             if (id != country.ID)
             {
