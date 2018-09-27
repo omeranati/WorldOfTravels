@@ -20,9 +20,29 @@ namespace WorldOfTravels.Controllers
         }
 
         // GET: Countries
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string NameSearch, string ContinentSearch, string TropicalSearch)
         {
-            return View(await _context.Country.ToListAsync());
+            var countries = from d in _context.Country
+                            select d;
+
+            if (!String.IsNullOrEmpty(NameSearch))
+            {
+                countries = countries.Where(p => p.Name.Contains(NameSearch));
+            }
+
+            if (!String.IsNullOrEmpty(ContinentSearch) && !ContinentSearch.Equals("All"))
+            {
+                var continentName = (Continent)Convert.ToInt32(ContinentSearch);
+                countries = countries.Where(p => p.Continent.Equals(continentName));
+            }
+
+            if (!String.IsNullOrEmpty(TropicalSearch) && !TropicalSearch.Equals("All"))
+            {
+                var isTropical = TropicalSearch.Equals("Yes");
+                countries = countries.Where(p => p.IsTropical == isTropical);
+            }
+            
+            return View(await countries.ToListAsync());
         }
 
         // GET: Countries/Details/5

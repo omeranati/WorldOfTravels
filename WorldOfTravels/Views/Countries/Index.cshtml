@@ -10,6 +10,31 @@
     <div id='myMap' class="col-md-6 center-tag" style='width: 800px; height: 350px;'></div>
 </div>
 
+<hr /> <br />
+
+    <form asp-controller="Countries" asp-action="Index" method="get" class="row">
+        <div class="col-md-3">
+            <input type="text" class="form-control" placeholder="Name" name="NameSearch">
+        </div>
+
+        <div class="col-md-3">
+            <select asp-items="Html.GetEnumSelectList<Continent>()" class="form-control" name="ContinentSearch">
+                <option selected="selected" value="All">Select Continent</option>
+            </select>
+        </div>
+          
+    <div class="col-md-3">
+        <select placeholder="Is Tropical" class="form-control dropdown" name="TropicalSearch">
+            <option value="All">All Countries</option>
+            <option value="Yes">Tropical Countries</option>
+            <option value="No">NO tropical Countries</option>
+        </select>
+    </div>
+        <input type="submit" value="Filter" class="btn btn-info" />
+    </form>
+
+<hr />
+
 <table class="table">
     <thead>
         <tr>
@@ -28,22 +53,22 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Continent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsTropical)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Continent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsTropical)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
@@ -57,16 +82,16 @@
 @section Scripts {
 
     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=Ao7Xe17AnUYUK8HAlSP-2NScahkmdQyFxpgc6e6KqW350MqLhi--frvTRtJZ8lif&callback=loadMapScenario' async defer></script>
-    
+
     <script type='text/javascript'>
-            
+
         function loadMapScenario() {
             // Create map
             var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
                 zoom: 1
             });
 
-            // Serialize Model data    
+            // Serialize Model data
             var mapsData = @Html.Raw(Json.Serialize(Model));
 
             // Usea SearchManager to find the countries location by their name

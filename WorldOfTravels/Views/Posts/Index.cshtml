@@ -14,8 +14,6 @@
     </button>
 </div>
 
-
-
 <form asp-controller="Posts" asp-action="Index" method="get" class="row">
     <div class="col-md-3">
         <input type="text" class="form-control" placeholder="Title" name="TitleSearchString">
@@ -99,9 +97,7 @@
 </div>
 
 <script>
-    //document.getElementById("countriesList").selectedIndex = -1;
     window.onload = function () {
         $("#countriesList").prop("selectedIndex", -1);
-    };
-    
+    };   
 </script>
