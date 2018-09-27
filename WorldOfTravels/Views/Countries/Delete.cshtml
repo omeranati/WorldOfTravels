@@ -10,14 +10,26 @@
 <div>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
+        <dt style="text-align: left">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Name)
         </dd>
+        <dt style="text-align: left">
+            @Html.DisplayNameFor(model => model.Continent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Continent)
+        </dd>
+        <dt style="text-align: left">
+            @Html.DisplayNameFor(model => model.IsTropical)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsTropical)
+        </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         <input type="hidden" asp-for="ID" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
