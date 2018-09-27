@@ -7,9 +7,7 @@
 <h2>Our Countries</h2>
 
 <div class="row">
-    <div class="col-md-6 center-tag">
-        <iframe scrolling="no" frameborder="0" clocktype="html5" style="overflow:hidden;border:0;margin:0;padding:0;width:480px;height:250px;" src="https://www.clocklink.com/clocks/HTML5/html5-world.html?Johannesburg&Mogadishu&Bangui&480&gray"></iframe>
-    </div>
+    <div id='myMap' class="col-md-6 center-tag" style='width: 800px; height: 350px;'></div>
 </div>
 
 <table class="table">
@@ -43,3 +41,44 @@
         <span class="glyphicon glyphicon-pencil"></span> Add New Country
     </button>
 </div>
+
+@section Scripts {
+
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=Ao7Xe17AnUYUK8HAlSP-2NScahkmdQyFxpgc6e6KqW350MqLhi--frvTRtJZ8lif&callback=loadMapScenario' async defer></script>
+    
+    <script type='text/javascript'>
+            
+        function loadMapScenario() {
+            // Create map
+            var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+                zoom: 1
+            });
+
+            // Serialize Model data    
+            var mapsData = @Html.Raw(Json.Serialize(Model));
+
+            // Usea SearchManager to find the countries location by their name
+            Microsoft.Maps.loadModule('Microsoft.Maps.Search', function () {
+                var searchManager = new Microsoft.Maps.Search.SearchManager(map);
+
+                // Iterate through the countries list and make pins on map with JQuery "each" selector
+                $.each(mapsData, function (i, item) {
+                    var requestOptions = {
+                        bounds: map.getBounds(),
+                        where: item.name,
+                        callback: function (answer, userData) {
+                            var pushpin = new Microsoft.Maps.Pushpin(answer.results[0].location, {
+                                //icon: 'https://www.bingmapsportal.com/Content/images/poi_custom.png',
+                                icon: "images/map pin.png",
+                                title: item.name,
+                            });
+
+                            map.entities.push(pushpin);
+                        }
+                    };
+                    searchManager.geocode(requestOptions);
+                });
+            });
+        }
+    </script>
+}
