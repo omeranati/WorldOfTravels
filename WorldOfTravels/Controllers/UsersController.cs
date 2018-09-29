@@ -26,6 +26,13 @@ namespace WorldOfTravels.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var ApplicationUsers = await _manager.Users.ToListAsync<ApplicationUser>();
             List<User> UsersList = new List<User>();
 
@@ -41,6 +48,13 @@ namespace WorldOfTravels.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (String.IsNullOrEmpty(id))
             {
                 return NotFound();
@@ -62,6 +76,13 @@ namespace WorldOfTravels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("ID,Username,IsAdmin")] User user)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (id != user.ID)
             {
                 return NotFound();
@@ -73,7 +94,6 @@ namespace WorldOfTravels.Controllers
                 {
                     ApplicationUser oldUser = await _manager.Users.FirstAsync<ApplicationUser>(u => u.Id == id);
                     oldUser.UserName = user.Username;
-                    oldUser.IsAdmin = user.IsAdmin;
                     oldUser.Email = user.Username;
                     IdentityResult result = await _manager.UpdateAsync(oldUser);
 
@@ -94,14 +114,23 @@ namespace WorldOfTravels.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(user);
         }
 
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (String.IsNullOrEmpty(id))
             {
                 return NotFound();
@@ -127,6 +156,13 @@ namespace WorldOfTravels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var user = await _manager.Users
                .FirstOrDefaultAsync(m => m.Id == id);
             await _manager.DeleteAsync(user);

@@ -14,10 +14,12 @@ namespace WorldOfTravels.Controllers
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _manager;
 
-        public PostsController(ApplicationDbContext context)
+        public PostsController(ApplicationDbContext context, UserManager<ApplicationUser> manager)
         {
             _context = context;
+            _manager = manager;
         }
 
         // GET: Posts
@@ -84,6 +86,13 @@ namespace WorldOfTravels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Content,Title,CountryID")] Post post)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (ModelState.IsValid)
             {
                 post.PublishDate = DateTime.Now;
@@ -118,7 +127,20 @@ namespace WorldOfTravels.Controllers
 
         public async Task<IActionResult> DeleteComment(int id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             var comment = await _context.Comment.FindAsync(id);
+
+            if (comment.UploaderUserName != loggedUser.UserName)
+            {
+                return RedirectToAction("Index");
+            }
+
             _context.Comment.Remove(comment);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -128,6 +150,13 @@ namespace WorldOfTravels.Controllers
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -149,6 +178,13 @@ namespace WorldOfTravels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Content,Title,PublishDate,CountryID")] Post post)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (id != post.ID)
             {
                 return NotFound();
@@ -185,6 +221,13 @@ namespace WorldOfTravels.Controllers
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -197,6 +240,12 @@ namespace WorldOfTravels.Controllers
             {
                 return NotFound();
             }
+
+            if (post.UploaderUserName != loggedUser.UserName)
+            {
+                return RedirectToAction("Index");
+            }
+
             return View(post);
         }
 
@@ -205,6 +254,13 @@ namespace WorldOfTravels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null)
+            {
+                return RedirectToAction("Index");
+            }
+
             var post = await _context.Post.FindAsync(id);
             
             _context.Post.Remove(post);

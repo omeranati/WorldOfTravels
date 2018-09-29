@@ -9,9 +9,17 @@
 
 <div class="row">
     <h1 class="col-md-9">World Of Travel Posts</h1>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+
+        if (user != null)
+        {
     <button style="margin-right: 10px; margin-top: 20px; float:right;" type="button" class="btn btn-info" onclick="location.href='@Url.Action("Create")'">
         <span class="glyphicon glyphicon-pencil"></span> Write New Post
     </button>
+        }
+    }
 </div>
 
 <form asp-controller="Posts" asp-action="Index" method="get" class="row">
@@ -32,43 +40,49 @@
     <div class="col-lg-8">
         @foreach (var item in Model)
         {
-        <section>
-            <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
-            <i class="glyphicon glyphicon-user"></i> <strong>@Html.DisplayFor(modelItem => item.UploaderUserName)</strong>
-            <hr>
-            <p>
-                <span class="glyphicon glyphicon-globe"></span> <strong>@Html.DisplayFor(modelItem => item.Country.Name)</strong>
-            </p>
-            <p class="small">
-                <span class="glyphicon glyphicon-calendar"></span> Posted on @Html.DisplayFor(modelItem => item.PublishDate)
-            </p>
-            <p>
-                @Html.DisplayFor(modelItem => item.Content)
-            </p>
-            <p>
-                @if (item.UploaderUserName != null && item.UploaderUserName.Equals(UserManager.GetUserName(User)))
-                {
-                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
-                    <a asp-action="Details" asp-route-id="@item.ID">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-                }
-            </p>
-         </section>
-
-            <div class="row" style="margin: 0px;">
-                <div class="well well-sm col-md-6">
-                    <p><i class="glyphicon glyphicon-send"></i> Leave a Comment:</p>
-                    @using (Html.BeginForm("PostComment", "Posts"))
+            <section>
+                <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
+                <i class="glyphicon glyphicon-user"></i> <strong>@Html.DisplayFor(modelItem => item.UploaderUserName)</strong>
+                <hr>
+                <p>
+                    <span class="glyphicon glyphicon-globe"></span> <strong>@Html.DisplayFor(modelItem => item.Country.Name)</strong>
+                </p>
+                <p class="small">
+                    <span class="glyphicon glyphicon-calendar"></span> Posted on @Html.DisplayFor(modelItem => item.PublishDate)
+                </p>
+                <p>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </p>
+                <p>
+                    @if (item.UploaderUserName != null && item.UploaderUserName.Equals(UserManager.GetUserName(User)))
                     {
-                        <input type="hidden" name="postId" value="@item.ID" />
-                        <div class="form-group">
-                            <textarea name="content" class="form-control" rows="2"></textarea>
-                        </div>
-                        <button type="submit" value="post" class="btn btn-info">Submit</button>
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                     }
-                </div>
-            </div>
+                </p>
+            </section>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                var user = await UserManager.GetUserAsync(User);
 
+                if (user != null)
+                {
+                    <div class="row" style="margin: 0px;">
+                        <div class="well well-sm col-md-6">
+                            <p><i class="glyphicon glyphicon-send"></i> Leave a Comment:</p>
+                            @using (Html.BeginForm("PostComment", "Posts"))
+                            {
+                                <input type="hidden" name="postId" value="@item.ID" />
+                                <div class="form-group">
+                                    <textarea name="content" class="form-control" rows="2"></textarea>
+                                </div>
+                                <button type="submit" value="post" class="btn btn-info">Submit</button>
+                            }
+                        </div>
+                    </div>
+                }
+            }
             @foreach (var comment in item.Comments)
             {
                 <section>
@@ -79,7 +93,7 @@
                         <small>@Html.DisplayFor(modelItem => comment.CreationDate)</small>
                     </p>
                     <p>@Html.DisplayFor(modelItem => comment.Content)</p>
-                    
+
                     @if (comment.UploaderUserName != null && comment.UploaderUserName.Equals(UserManager.GetUserName(User)))
                     {
                         @using (Html.BeginForm("DeleteComment", "Posts"))
@@ -91,9 +105,9 @@
                 </section>
             }
 
-            <br />
-        }
-    </div>
+                    <br />
+                }
+            </div>
 </div>
 
 <script>

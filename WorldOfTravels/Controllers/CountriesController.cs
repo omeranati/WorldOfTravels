@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WorldOfTravels.Data;
 using WorldOfTravels.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace WorldOfTravels.Controllers
 {
     public class CountriesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CountriesController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _manager;
+        public CountriesController(ApplicationDbContext context, UserManager<ApplicationUser> manager)
         {
             _context = context;
+            _manager = manager;
+
         }
 
         // GET: Countries
@@ -76,6 +79,13 @@ namespace WorldOfTravels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,Continent,IsTropical")] Country country)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(country);
@@ -88,6 +98,13 @@ namespace WorldOfTravels.Controllers
         // GET: Countries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -108,6 +125,13 @@ namespace WorldOfTravels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Continent,IsTropical")] Country country)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (id != country.ID)
             {
                 return NotFound();
@@ -131,7 +155,8 @@ namespace WorldOfTravels.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Index");
             }
             return View(country);
         }
@@ -139,6 +164,13 @@ namespace WorldOfTravels.Controllers
         // GET: Countries/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -159,6 +191,13 @@ namespace WorldOfTravels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index");
+            }
+
             var country = await _context.Country.FindAsync(id);
             _context.Country.Remove(country);
             await _context.SaveChangesAsync();
