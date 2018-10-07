@@ -1,0 +1,56 @@
+﻿@model IEnumerable<WorldOfTravels.Models.GroupByCountry>
+
+@{
+    ViewData["Title"] = "Graphs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Statistics of the Posts</h2>
+
+<div>
+    <h4>The most popular countries by how many posts they have</h4>
+    <br />
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CountryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPosts)
+            </th>
+        </tr>
+
+        @{
+            foreach (var post in Model)
+            {
+                <tr>
+                    <td>
+                        @post.CountryName
+                    </td>
+                    <td>
+                        @post.TotalPosts
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+    <br />
+</div>
+
+<section>
+    <h3>Pie Chart</h3>
+    <div id="popular-countries-graph" class="col-md-6 center-tag"></div>
+</section>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="~/lib/graph.js"></script>
+<script src="~/lib/jquery/jquery-1.10.2.js"></script>
+
+<script>
+    $.ajax({
+        url: '/Posts/GetGroupByCountry',
+        success: function (data) {
+            createPopularCountriesGraph(data, "popular-countries-graph");
+        }
+    })
+</script>

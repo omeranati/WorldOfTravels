@@ -23,4 +23,13 @@ namespace WorldOfTravels.Models
         public virtual List<Comment> Comments { get; set; }
         public string UploaderUserName { get; set; }
     }
+
+    public class GroupByCountry
+    {
+        [Display(Name = "Country Name")]
+        public string CountryName { get; set; }
+
+        [Display(Name = "Total Posts")]
+        public int TotalPosts { get; set; }
+    }
 }

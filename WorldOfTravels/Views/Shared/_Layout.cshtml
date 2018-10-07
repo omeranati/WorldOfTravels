@@ -46,13 +46,14 @@
 
                         if (user != null && user.IsAdmin)
                         {
-                    <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
+                            <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
                         }
                     }
-                        
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    </ul>
+
+                    <li>@Html.ActionLink("Posts Statistics", "Graphs", "Posts")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                </ul>
                 <partial name="_LoginPartial" />
             </div>
         </div>

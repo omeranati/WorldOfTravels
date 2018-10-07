@@ -290,5 +290,24 @@ namespace WorldOfTravels.Controllers
 
             ViewBag.CountryID = new SelectList(countriesQuery, "ID", "Name", null);
         }
+
+        // GET: Posts/GroupByCountry
+        public ActionResult Graphs()
+        {
+            var query = from post in _context.Post
+                        group post by post.Country.Name into g
+                        select new GroupByCountry() { CountryName = g.Key, TotalPosts = g.Sum(p => 1) };
+            return View(query.ToList());
+        }
+
+        [HttpGet]
+        public ActionResult GetGroupByCountry()
+        {
+            var query = from post in _context.Post
+                        group post by post.Country.Name into g
+                        select new GroupByCountry() { CountryName = g.Key, TotalPosts = g.Sum(p => 1) };
+
+            return Json(query);
+        }
     }
 }
