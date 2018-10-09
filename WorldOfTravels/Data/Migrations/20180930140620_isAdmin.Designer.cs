@@ -201,7 +201,7 @@ namespace WorldOfTravels.Data.Migrations
 
                     b.Property<int>("PostID");
 
-                    b.Property<string>("UploaderUserName");
+                    b.Property<string>("UploaderUsername");
 
                     b.HasKey("ID");
 
@@ -242,7 +242,7 @@ namespace WorldOfTravels.Data.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<string>("UploaderUserName");
+                    b.Property<string>("UploaderUsername");
 
                     b.HasKey("ID");
 

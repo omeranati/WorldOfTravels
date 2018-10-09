@@ -7,7 +7,7 @@ namespace WorldOfTravels.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "UploaderUserName",
+                name: "UploaderUsername",
                 table: "Comment",
                 nullable: true);
         }
@@ -15,7 +15,7 @@ namespace WorldOfTravels.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "UploaderUserName",
+                name: "UploaderUsername",
                 table: "Comment");
         }
     }

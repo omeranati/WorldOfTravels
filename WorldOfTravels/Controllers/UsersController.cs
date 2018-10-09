@@ -99,7 +99,7 @@ namespace WorldOfTravels.Controllers
 
                     if (!result.Succeeded)
                     {
-                        
+
                         throw new DbUpdateConcurrencyException("Save failed", null);
                     }
                 }
@@ -172,6 +172,36 @@ namespace WorldOfTravels.Controllers
         private bool UserExists(string id)
         {
             return _manager.Users.Any<ApplicationUser>(e => e.Id == id);
+        }
+
+        public async Task<ActionResult> Graphs()
+        {
+            // TODO !!!
+            var users = from d in _context.Post
+                        select d;
+
+            return View(await users.ToListAsync());
+
+        }
+
+        [HttpGet]
+        public ActionResult GetPostsGroupByUser()
+        {
+            var query = from post in _context.Post
+                        group post by post.UploaderUsername into g
+                        select new { Username = g.Key, Count = g.Sum(p => 1) };
+
+            return Json(query);
+        }
+
+        [HttpGet]
+        public ActionResult GetCommentsGroupByUser()
+        {
+            var query = from comment in _context.Comment
+                        group comment by comment.UploaderUsername into g
+                        select new { Username = g.Key, Count = g.Sum(p => 1) };
+
+            return Json(query);
         }
     }
 }

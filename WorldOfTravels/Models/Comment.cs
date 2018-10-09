@@ -21,6 +21,7 @@ namespace WorldOfTravels.Models
         public DateTime CreationDate { get; set; }
 
         public virtual Post Post { get; set; }
-        public string UploaderUserName { get; set; }
+
+        public string UploaderUsername { get; set; }
     }
 }

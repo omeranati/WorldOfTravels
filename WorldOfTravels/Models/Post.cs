@@ -8,8 +8,10 @@ namespace WorldOfTravels.Models
 {
     public class Post
     {
+        [Required]
         public int ID { get; set; }
 
+        [Required]
         public string Title { get; set; }
 
         public string Content { get; set; }
@@ -18,10 +20,16 @@ namespace WorldOfTravels.Models
         [DataType(DataType.Date)]
         public DateTime PublishDate { get; set; }
 
-        public virtual int CountryID { get; set; }
+        [Display(Name = "Uploader Username")]
+        [Required]
+        public string UploaderUsername { get; set; }
+
+        [Required]
+        public int CountryID { get; set; }
+
         public virtual Country Country { get; set; }
+
         public virtual List<Comment> Comments { get; set; }
-        public string UploaderUserName { get; set; }
     }
 
     public class GroupByCountry

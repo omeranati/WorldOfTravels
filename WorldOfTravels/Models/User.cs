@@ -10,9 +10,11 @@ namespace WorldOfTravels.Models
     {
         [Required]
         public string ID { get; set; }
+
         [Required]
         public string Username { get; set; }
+
         [Required]
-        public bool IsAdmin { get; set; } 
+        public bool IsAdmin { get; set; }
     }
 }

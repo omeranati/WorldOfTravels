@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Graphs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .bar {
+        fill: steelblue;
+    }
+
+        .bar:hover {
+            fill: brown;
+        }
+</style>
+
+<h2>Statistics of Users activity</h2>
+<br />
+<div>
+    <h3>How many posts each user wrote</h3>
+    <section>
+        <svg id="users-posts-bar-chart" width="960" height="500"></svg>
+    </section>
+</div>
+
+<div>
+    <h3>How many comments each user wrote</h3>
+    <section>
+        <svg id="users-comments-bar-chart" width="960" height="500"></svg>
+    </section>
+</div>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="~/lib/graph.js"></script>
+<script src="~/lib/jquery/jquery-1.10.2.js"></script>
+<script>
+    $.ajax({
+        url: '/Users/GetPostsGroupByUser',
+        success: function (data) {
+            createPostsPerUserGraph(data, "users-posts-bar-chart", "Total Posts");
+        }
+    })
+</script>
+<script>
+    $.ajax({
+        url: '/Users/GetCommentsGroupByUser',
+        success: function (data) {
+            createPostsPerUserGraph(data, "users-comments-bar-chart", "Total Comments");
+        }
+    })
+</script>

@@ -100,7 +100,7 @@ namespace WorldOfTravels.Controllers
                                      where d.ID == post.CountryID
                                      select d).First();
 
-                post.UploaderUserName = HttpContext.User.Identity.Name;
+                post.UploaderUsername = HttpContext.User.Identity.Name;
 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
@@ -116,7 +116,7 @@ namespace WorldOfTravels.Controllers
                 Content = content,
                 PostID = postId,
                 CreationDate = DateTime.Now,
-                UploaderUserName = HttpContext.User.Identity.Name
+                UploaderUsername = HttpContext.User.Identity.Name
             };
 
             _context.Comment.Add(comment);
@@ -136,7 +136,7 @@ namespace WorldOfTravels.Controllers
 
             var comment = await _context.Comment.FindAsync(id);
 
-            if (comment.UploaderUserName != loggedUser.UserName)
+            if (comment.UploaderUsername != loggedUser.UserName)
             {
                 return RedirectToAction("Index");
             }
@@ -241,7 +241,7 @@ namespace WorldOfTravels.Controllers
                 return NotFound();
             }
 
-            if (post.UploaderUserName != loggedUser.UserName)
+            if (post.UploaderUsername != loggedUser.UserName)
             {
                 return RedirectToAction("Index");
             }
@@ -292,12 +292,14 @@ namespace WorldOfTravels.Controllers
         }
 
         // GET: Posts/GroupByCountry
-        public ActionResult Graphs()
+        public async Task<ActionResult> Graphs()
         {
             var query = from post in _context.Post
-                        group post by post.Country.Name into g
-                        select new GroupByCountry() { CountryName = g.Key, TotalPosts = g.Sum(p => 1) };
-            return View(query.ToList());
+                        group post by post.CountryID into p
+                        join country in _context.Country on p.Key equals country.ID
+                        select new GroupByCountry() { CountryName = country.Name, TotalPosts = p.Sum(s => 1) };
+
+            return View(await query.OrderByDescending(p => p.TotalPosts).ToListAsync());
         }
 
         [HttpGet]
