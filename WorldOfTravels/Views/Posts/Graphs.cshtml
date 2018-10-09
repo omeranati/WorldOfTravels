@@ -5,10 +5,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Statistics</h2>
+<style>
+    .bar {
+        fill: green;
+    }
+
+        .bar:hover {
+            fill: orange;
+        }
+</style>
+
+<h2>Posts Statistics</h2>
+<br />
 
 <div>
-    <h4>The most popular countries by how many posts they have</h4>
+    <h3>The most popular countries by how many posts they have</h3>
     <br />
     <table class="table">
         <tr>
@@ -38,9 +49,19 @@
 </div>
 
 <section>
-    <h3>Pie Chart</h3>
+    <h4>Pie Chart</h4>
     <div id="countries-pie-chart" class="col-md-6 center-tag"></div>
 </section>
+<hr />
+
+<div>
+    <h3>The most popular posts by how many comments they have</h3>
+    <br />
+    <section>
+        <h4>Bar Chart</h4>
+        <svg id="posts-comments-bar-chart" width="960" height="500"></svg>
+    </section>
+</div>
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="~/lib/graph.js"></script>
@@ -51,6 +72,14 @@
         url: '/Posts/GetGroupByCountry',
         success: function (data) {
             createPopularCountriesGraph(data, "countries-pie-chart");
+        }
+    })
+</script>
+<script>
+    $.ajax({
+        url: '/Posts/GetCommentsGroupByPost',
+        success: function (data) {
+            createBarChartGraph(data, "posts-comments-bar-chart", "Total Comments");
         }
     })
 </script>

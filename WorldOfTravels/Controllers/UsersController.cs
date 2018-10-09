@@ -176,7 +176,6 @@ namespace WorldOfTravels.Controllers
 
         public async Task<ActionResult> Graphs()
         {
-            // TODO !!!
             var users = from d in _context.Post
                         select d;
 
@@ -189,9 +188,9 @@ namespace WorldOfTravels.Controllers
         {
             var query = from post in _context.Post
                         group post by post.UploaderUsername into g
-                        select new { Username = g.Key, Count = g.Sum(p => 1) };
+                        select new { Name = g.Key, Count = g.Sum(p => 1) };
 
-            return Json(query);
+            return Json(query.OrderByDescending(u => u.Count));
         }
 
         [HttpGet]
@@ -199,9 +198,9 @@ namespace WorldOfTravels.Controllers
         {
             var query = from comment in _context.Comment
                         group comment by comment.UploaderUsername into g
-                        select new { Username = g.Key, Count = g.Sum(p => 1) };
+                        select new { Name = g.Key, Count = g.Sum(p => 1) };
 
-            return Json(query);
+            return Json(query.OrderByDescending(u => u.Count));
         }
     }
 }

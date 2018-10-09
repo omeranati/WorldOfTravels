@@ -16,14 +16,16 @@
 <h2>Statistics of Users activity</h2>
 <br />
 <div>
-    <h3>How many posts each user wrote</h3>
+    <h3>The most popular users by how much they write posts</h3>
     <section>
         <svg id="users-posts-bar-chart" width="960" height="500"></svg>
     </section>
 </div>
 
+<hr /><br />
+
 <div>
-    <h3>How many comments each user wrote</h3>
+    <h3>The most popular reviewers by how much they write comments</h3>
     <section>
         <svg id="users-comments-bar-chart" width="960" height="500"></svg>
     </section>
@@ -36,7 +38,7 @@
     $.ajax({
         url: '/Users/GetPostsGroupByUser',
         success: function (data) {
-            createPostsPerUserGraph(data, "users-posts-bar-chart", "Total Posts");
+            createBarChartGraph(data, "users-posts-bar-chart", "Total Posts");
         }
     })
 </script>
@@ -44,7 +46,7 @@
     $.ajax({
         url: '/Users/GetCommentsGroupByUser',
         success: function (data) {
-            createPostsPerUserGraph(data, "users-comments-bar-chart", "Total Comments");
+            createBarChartGraph(data, "users-comments-bar-chart", "Total Comments");
         }
     })
 </script>

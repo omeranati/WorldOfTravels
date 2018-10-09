@@ -311,5 +311,16 @@ namespace WorldOfTravels.Controllers
 
             return Json(query);
         }
+
+        [HttpGet]
+        public ActionResult GetCommentsGroupByPost()
+        {
+            var query = from comment in _context.Comment
+                        group comment by comment.PostID into c
+                        join post in _context.Post on c.Key equals post.ID
+                        select new { Name = post.Title, Count = c.Sum(p => 1) };
+
+            return Json(query.OrderByDescending(p => p.Count));
+        }
     }
 }

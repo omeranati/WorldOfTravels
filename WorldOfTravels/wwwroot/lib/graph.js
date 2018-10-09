@@ -42,7 +42,7 @@ function createPopularCountriesGraph(data, id) {
 }
 
 // bar chart
-function createPostsPerUserGraph(data, id, text) {
+function createBarChartGraph(data, id, text) {
     var svg = d3.select("#" + id),
         margin = {
             top: 20,
@@ -64,12 +64,12 @@ function createPostsPerUserGraph(data, id, text) {
 
     // load the data
     data.forEach(function (d) {
-        d.username = d.username;
+        d.name = d.name;
         d.count = +d.count;
     });
 
     // scale the range of the data
-    x.domain(data.map(function (d) { return d.username; }));
+    x.domain(data.map(function (d) { return d.name; }));
     y.domain([0, d3.max(data, function (d) { return d.count; })]);
 
     // add axis
@@ -93,7 +93,7 @@ function createPostsPerUserGraph(data, id, text) {
         .enter().append("rect")
         .attr("class", "bar")
         .attr("x", function (d) {
-            return x(d.username);
+            return x(d.name);
         })
         .attr("y", function (d) {
             return y(Number(d.count));
