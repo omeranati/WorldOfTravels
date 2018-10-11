@@ -15,6 +15,7 @@ namespace WorldOfTravels.Models
         public string Username { get; set; }
 
         [Required]
+        [Display(Name = "Is Admin?")]
         public bool IsAdmin { get; set; }
     }
 }

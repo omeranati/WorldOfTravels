@@ -21,7 +21,6 @@ namespace WorldOfTravels.Models
         public DateTime PublishDate { get; set; }
 
         [Display(Name = "Uploader Username")]
-        [Required]
         public string UploaderUsername { get; set; }
 
         [Required]

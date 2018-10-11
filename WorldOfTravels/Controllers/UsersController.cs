@@ -95,6 +95,12 @@ namespace WorldOfTravels.Controllers
                     ApplicationUser oldUser = await _manager.Users.FirstAsync<ApplicationUser>(u => u.Id == id);
                     oldUser.UserName = user.Username;
                     oldUser.Email = user.Username;
+
+                    if (oldUser.UserName != loggedUser.UserName)
+                    {
+                        oldUser.IsAdmin = user.IsAdmin;
+                    }
+
                     IdentityResult result = await _manager.UpdateAsync(oldUser);
 
                     if (!result.Succeeded)

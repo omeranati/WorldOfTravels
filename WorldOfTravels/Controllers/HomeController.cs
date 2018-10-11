@@ -22,7 +22,7 @@ namespace WorldOfTravels.Controllers
             return View();
         }
 
-        public IActionResult Contact()
+        public IActionResult Clock()
         {
             ViewData["Message"] = "Your contact page.";
 

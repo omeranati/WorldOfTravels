@@ -1,9 +1,10 @@
-﻿@model WorldOfTravels.Models.User
+﻿@using Microsoft.AspNetCore.Identity
+@model WorldOfTravels.Models.User
 
 @{
     ViewData["Title"] = "Edit";
 }
-
+@inject UserManager<ApplicationUser> UserManager
 <h2>Edit</h2>
 
 <h4>User</h4>
@@ -18,6 +19,16 @@
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
+            @if (Model.Username != UserManager.GetUserName(User))
+            {
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label>
+                            <input asp-for="IsAdmin" /> @Html.DisplayNameFor(model => model.IsAdmin)
+                        </label>
+                    </div>
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
