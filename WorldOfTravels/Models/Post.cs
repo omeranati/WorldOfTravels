@@ -29,6 +29,8 @@ namespace WorldOfTravels.Models
         public virtual Country Country { get; set; }
 
         public virtual List<Comment> Comments { get; set; }
+
+        public virtual bool IsRecommended { get; set; }
     }
 
     public class GroupByCountry

@@ -17,8 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsvTools" Version="1.0.12" />
+    <PackageReference Include="libsvm.net" Version="2.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.3" PrivateAssets="All" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
