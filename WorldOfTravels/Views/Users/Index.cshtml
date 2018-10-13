@@ -8,7 +8,24 @@
 @using WorldOfTravels.Models
 @inject UserManager<ApplicationUser> UserManager
 
-<h2>Index</h2>
+<h2>Users</h2>
+
+
+<form asp-controller="Users" asp-action="Index" method="get" class="row">
+    <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Name" name="UserNameSearch">
+    </div>
+
+
+    <div class="col-md-3">
+        <select placeholder="Is Tropical" class="form-control dropdown" name="AdminSearch">
+            <option value="All">All Privilages</option>
+            <option value="Yes">Admin</option>
+            <option value="No">Not Admin</option>
+        </select>
+    </div>
+    <input type="submit" value="Filter" class="btn btn-info" />
+</form>
 
 <table class="table">
     <thead>

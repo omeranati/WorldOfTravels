@@ -24,7 +24,7 @@ namespace WorldOfTravels.Controllers
         }
 
         // GET: Users
-        public async Task<IActionResult> Index()
+        /*public async Task<IActionResult> Index()
         {
             var loggedUser = await _manager.GetUserAsync(User);
 
@@ -43,7 +43,43 @@ namespace WorldOfTravels.Controllers
             }
 
             return View(UsersList);
+        }*/
+
+        // GET: Usesrs
+        public async Task<IActionResult> Index(string UserNameSearch, string AdminSearch)
+        {
+            var loggedUser = await _manager.GetUserAsync(User);
+
+            if (loggedUser == null || !loggedUser.IsAdmin)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var applicationUsers = await _manager.Users.ToListAsync<ApplicationUser>();
+
+            if (!String.IsNullOrEmpty(UserNameSearch))
+            {
+              applicationUsers = applicationUsers.Where(u => u.UserName.Contains(UserNameSearch)).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(AdminSearch) && !AdminSearch.Equals("All"))
+            {
+                var isAdmin = AdminSearch.Equals("Yes");
+                applicationUsers = applicationUsers.Where(u => u.IsAdmin== isAdmin).ToList();
+            }
+
+            List<User> UsersList = new List<User>();
+
+            foreach (var user in applicationUsers)
+            {
+                User UserModel = new User { ID = user.Id, Username = user.UserName, IsAdmin = user.IsAdmin };
+                UsersList.Add(UserModel);
+            }
+
+            return View(UsersList);
         }
+
+
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
