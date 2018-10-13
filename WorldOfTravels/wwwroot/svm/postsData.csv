@@ -1,0 +1,15 @@
+Text,IsRecommended
+good,1
+nice,1
+beautiful,1
+comfortable,1
+amazing,1
+perfect,1
+fun,1
+bad,-1
+uncomfortable,-1
+dirty,-1
+danger,-1
+scary,-1
+boring,-1
+violent,-1

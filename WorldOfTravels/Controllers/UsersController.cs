@@ -216,13 +216,9 @@ namespace WorldOfTravels.Controllers
             return _manager.Users.Any<ApplicationUser>(e => e.Id == id);
         }
 
-        public async Task<ActionResult> Graphs()
+        public IActionResult Graphs()
         {
-            var users = from d in _context.Post
-                        select d;
-
-            return View(await users.ToListAsync());
-
+            return View();
         }
 
         [HttpGet]

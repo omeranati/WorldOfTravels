@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using WorldOfTravels.Data;
 using WorldOfTravels.Models;
 using Microsoft.AspNetCore.Identity;
+using DataAccess;
+using System.Configuration;
+using libsvm;
 
 namespace WorldOfTravels.Controllers
 {
@@ -321,6 +324,96 @@ namespace WorldOfTravels.Controllers
                         select new { Name = post.Title, Count = c.Sum(p => 1) };
 
             return Json(query.OrderByDescending(p => p.Count));
+        }
+
+        public IActionResult RecommendedDestinations()
+        {
+            // Load the predifined data for smv algorithm
+            string dataFilePath = "./wwwroot/svm/postsData.csv";
+            var dataTable = DataTable.New.ReadCsv(dataFilePath);
+            List<string> data = dataTable.Rows.Select(row => row["Text"]).ToList();
+
+            // Load classes (-1 or +1)
+            double[] classes = dataTable.Rows.Select(row => double.Parse(row["IsRecommended"]))
+                                       .ToArray();
+
+            // Get words
+            var vocabulary = data.SelectMany(GetWords).Distinct().OrderBy(word => word).ToList();
+
+            // Generate a svm problem
+            var problem = CreateProblem(data, classes, vocabulary.ToList());
+
+            // Create and train a smv model
+            const int C = 1;
+            var model = new libsvm.C_SVC(problem, KernelHelper.LinearKernel(), C);
+
+            Dictionary<int, string> _predictionDictionary = new Dictionary<int, string> { { -1, "NotRecommended" }, { 1, "Recommended" } };
+
+            // Get all posts
+            var posts = _context.Post.ToList();
+
+            // Get recommended posts
+            foreach (Post currPost in posts)
+            {
+                if (currPost.Content != null)
+                {
+                    var node = CreateNode(currPost.Content, vocabulary);
+                    var prediction = model.Predict(node);
+
+                    currPost.IsRecommended = _predictionDictionary[(int)prediction] == "Recommended";
+                }
+                else
+                {
+                    currPost.IsRecommended = false;
+                }
+            }
+
+            var recommendedPosts = posts.Where(p => p.IsRecommended == true);
+
+            foreach (Post currPost in recommendedPosts)
+            {
+                currPost.Country = _context.Country.First(c => c.ID == currPost.CountryID);
+                currPost.Comments = _context.Comment.Where(c => c.PostID == currPost.ID).ToList();
+            }
+
+            return View(recommendedPosts.OrderByDescending(p => p.PublishDate));
+        }
+
+        private static IEnumerable<string> GetWords(string x)
+        {
+            return x.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private svm_problem CreateProblem(IEnumerable<string> x, double[] y, IReadOnlyList<string> vocabulary)
+        {
+            return new svm_problem
+            {
+                y = y,
+                x = x.Select(xVector => CreateNode(xVector, vocabulary)).ToArray(),
+                l = y.Length
+            };
+        }
+
+        private static svm_node[] CreateNode(string x, IReadOnlyList<string> vocabulary)
+        {
+            var node = new List<svm_node>(vocabulary.Count);
+
+            string[] words = x.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < vocabulary.Count; i++)
+            {
+                int occurenceCount = words.Count(s => String.Equals(s, vocabulary[i], StringComparison.OrdinalIgnoreCase));
+                if (occurenceCount == 0)
+                    continue;
+
+                node.Add(new svm_node
+                {
+                    index = i + 1,
+                    value = occurenceCount
+                });
+            }
+
+            return node.ToArray();
         }
     }
 }

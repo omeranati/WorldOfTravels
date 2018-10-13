@@ -37,8 +37,8 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Posts" asp-action="Index">Posts</a></li>
+                    <li><a asp-area="" asp-controller="Posts" asp-action="RecommendedDestinations">Recommended Destinations</a></li>
                     <li><a asp-area="" asp-controller="Countries" asp-action="Index">Countries</a></li>
                     @if (SignInManager.IsSignedIn(User))
                     {
