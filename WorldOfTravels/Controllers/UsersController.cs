@@ -23,28 +23,6 @@ namespace WorldOfTravels.Controllers
 
         }
 
-        // GET: Users
-        /*public async Task<IActionResult> Index()
-        {
-            var loggedUser = await _manager.GetUserAsync(User);
-
-            if (loggedUser == null || !loggedUser.IsAdmin)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            var ApplicationUsers = await _manager.Users.ToListAsync<ApplicationUser>();
-            List<User> UsersList = new List<User>();
-
-            foreach (var user in ApplicationUsers)
-            {
-                User UserModel = new User { ID = user.Id, Username = user.UserName, IsAdmin = user.IsAdmin };
-                UsersList.Add(UserModel);
-            }
-
-            return View(UsersList);
-        }*/
-
         // GET: Usesrs
         public async Task<IActionResult> Index(string UserNameSearch, string AdminSearch)
         {
