@@ -38,7 +38,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Posts" asp-action="Index">Posts</a></li>
-                    <li><a asp-area="" asp-controller="Posts" asp-action="RecommendedDestinations">Recommended Destinations</a></li>
+                    <li><a asp-area="" asp-controller="Posts" asp-action="RecommendedDestinations">Recommended</a></li>
                     <li><a asp-area="" asp-controller="Countries" asp-action="Index">Countries</a></li>
                     @if (SignInManager.IsSignedIn(User))
                     {
@@ -53,7 +53,7 @@
                     <li>@Html.ActionLink("Posts Statistics", "Graphs", "Posts")</li>
                     <li>@Html.ActionLink("Users Statistics", "Graphs", "Users")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("World Clock", "Clock", "Home")</li>
+                    <li>@Html.ActionLink("Clock", "Clock", "Home")</li>
                 </ul>
                 <partial name="_LoginPartial" />
             </div>

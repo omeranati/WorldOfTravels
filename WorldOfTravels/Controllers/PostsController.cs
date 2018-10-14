@@ -114,16 +114,19 @@ namespace WorldOfTravels.Controllers
 
         public ActionResult PostComment(int postId, string content)
         {
-            Comment comment = new Comment
+            if (!string.IsNullOrEmpty(content))
             {
-                Content = content,
-                PostID = postId,
-                CreationDate = DateTime.Now,
-                UploaderUsername = HttpContext.User.Identity.Name
-            };
+                Comment comment = new Comment
+                {
+                    Content = content,
+                    PostID = postId,
+                    CreationDate = DateTime.Now,
+                    UploaderUsername = HttpContext.User.Identity.Name
+                };
 
-            _context.Comment.Add(comment);
-            _context.SaveChanges();
+                _context.Comment.Add(comment);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Index");
         }
@@ -201,6 +204,7 @@ namespace WorldOfTravels.Controllers
                     post.Country = (Country)(from d in _context.Country
                                              where d.ID == post.CountryID
                                              select d).First();
+                    post.UploaderUsername = HttpContext.User.Identity.Name;
                     _context.Update(post);
                     await _context.SaveChangesAsync();
                 }

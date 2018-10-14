@@ -29,7 +29,7 @@ namespace WorldOfTravels.Models
         America,
         Asia,
         Africa,
-        Europa,
+        Europe,
         Australia
     }
 }
