@@ -5,20 +5,15 @@
     ViewData["Title"] = "Edit";
 }
 @inject UserManager<ApplicationUser> UserManager
-<h2>Edit</h2>
-
-<h4>User</h4>
+<h2>Edit User @Model.Username</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Username" class="form-control" />
+            
             @if (Model.Username != UserManager.GetUserName(User))
             {
                 <div class="form-group">
